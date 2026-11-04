@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ModuleContainerWorkspace } from '@/components/workspace';
+
+const moduleScope = [
+  {
+    label: 'Base Color Definitions',
+    detail: 'Structured container for primary, neutral, and semantic color entries.',
+  },
+  {
+    label: 'Tonal Scale Slots',
+    detail: 'Dedicated grid stage reserved for perceptual step ramps and stops.',
+  },
+  {
+    label: 'Inspector Binding',
+    detail: 'Contextual selection hooks prepared for future color space editing.',
+  },
+] as const;
+
+const inspectorSections = [
+  {
+    title: 'Container Status',
+    properties: [
+      { label: 'Module', value: 'Palettes', mono: true },
+      { label: 'State', value: 'Shell Ready', mono: true },
+      { label: 'Color Engine', value: 'Deferred', mono: true },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Palettes">
+  <ModuleContainerWorkspace
+    client:load
+    sectionId="palettes"
+    icon="swatches"
+    title="Palettes Workspace"
+    summary="Architectural canvas slot reserved for color palette organization and tonal scale management."
+    emptyTitle="Palette module slot ready"
+    emptyDescription="Color generation and tonal scale logic are intentionally deferred in the initial foundation. This workspace provides the responsive toolbar, canvas frame, and inspector hooks for upcoming palette tools."
+    moduleScope={moduleScope}
+    inspectorSections={inspectorSections}
+  />
+</BaseLayout>

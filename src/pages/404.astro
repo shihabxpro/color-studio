@@ -1,0 +1,22 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ButtonLink, EmptyState } from '@/components/ui';
+---
+
+<BaseLayout title="Not Found">
+  <div class="min-h-dvh flex items-center justify-center p-6 studio-grid-bg">
+    <div class="w-full max-w-md space-y-4">
+      <EmptyState
+        icon="terminal"
+        meta="404 · ROUTE NOT FOUND"
+        title="Workspace route does not exist"
+        description="The requested path is outside the Color Studio navigation structure."
+      />
+      <div class="flex justify-center">
+        <ButtonLink href="/" variant="primary" size="md">
+          Return to Workspace
+        </ButtonLink>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

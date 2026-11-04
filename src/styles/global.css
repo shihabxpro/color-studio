@@ -1,0 +1,95 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+@theme inline {
+  /* Semantic Surfaces */
+  --color-canvas: var(--cs-canvas);
+  --color-surface: var(--cs-surface);
+  --color-surface-subtle: var(--cs-surface-subtle);
+  --color-surface-muted: var(--cs-surface-muted);
+  --color-surface-elevated: var(--cs-surface-elevated);
+  --color-overlay: var(--cs-overlay);
+
+  /* Semantic Borders */
+  --color-line-subtle: var(--cs-border-subtle);
+  --color-line: var(--cs-border-default);
+  --color-line-strong: var(--cs-border-strong);
+
+  /* Semantic Ink / Foreground */
+  --color-ink: var(--cs-fg-primary);
+  --color-ink-secondary: var(--cs-fg-secondary);
+  --color-ink-muted: var(--cs-fg-muted);
+  --color-ink-disabled: var(--cs-fg-disabled);
+
+  /* Restrained Developer Accent */
+  --color-accent: var(--cs-accent);
+  --color-accent-hover: var(--cs-accent-hover);
+  --color-accent-subtle: var(--cs-accent-subtle);
+  --color-accent-border: var(--cs-accent-border);
+  --color-accent-ink: var(--cs-accent-fg);
+  --color-accent-contrast: var(--cs-accent-contrast);
+
+  /* Typography */
+  --font-sans: var(--cs-font-sans);
+  --font-mono: var(--cs-font-mono);
+
+  /* Border Radii */
+  --radius-xs: var(--cs-radius-xs);
+  --radius-sm: var(--cs-radius-sm);
+  --radius-md: var(--cs-radius-md);
+  --radius-lg: var(--cs-radius-lg);
+
+  /* Elevation */
+  --shadow-xs: var(--cs-shadow-xs);
+  --shadow-sm: var(--cs-shadow-sm);
+  --shadow-overlay: var(--cs-shadow-overlay);
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--cs-border-default);
+  }
+
+  html {
+    font-family: var(--cs-font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: var(--cs-canvas);
+    color: var(--cs-fg-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--cs-canvas);
+    color: var(--cs-fg-primary);
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--cs-font-mono);
+    font-feature-settings: 'tnum' 1, 'zero' 1;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cs-accent);
+    outline-offset: 1px;
+  }
+}
+
+/* Subtle studio canvas dot pattern for architectural framing */
+.studio-grid-bg {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    var(--cs-border-default) 1px,
+    transparent 0
+  );
+  background-size: 20px 20px;
+}

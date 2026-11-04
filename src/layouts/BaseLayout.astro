@@ -1,0 +1,48 @@
+---
+import '@/styles/global.css';
+import { SITE_CONFIG } from '@/config/site';
+import { withBase } from '@/lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = SITE_CONFIG.name,
+  description = SITE_CONFIG.description,
+} = Astro.props;
+
+const pageTitle =
+  title === SITE_CONFIG.name ? title : `${title} — ${SITE_CONFIG.name}`;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('cs:theme');
+          var theme = saved === 'dark' || saved === 'light' ? saved : 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-canvas text-ink antialiased selection:bg-accent-subtle selection:text-accent-ink">
+    <a
+      href="#workspace-main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-1.5 focus:rounded-sm focus:bg-surface focus:text-ink focus:border focus:border-accent focus:text-[12px] focus:font-medium"
+    >
+      Skip to workspace
+    </a>
+    <slot />
+  </body>
+</html>

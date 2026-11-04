@@ -1,0 +1,162 @@
+/**
+ * Color Studio — Design Tokens
+ *
+ * Workspace surfaces use strictly achromatic neutrals (chroma = 0) so application
+ * chrome never introduces hue bias when developers evaluate color values.
+ * Accent usage is intentionally restrained to focus states, active navigation,
+ * and primary interactive controls.
+ */
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* ------------------------------------------------------------------------
+   * 1. Primitive Neutral Scale (Achromatic)
+   * ---------------------------------------------------------------------- */
+  --cs-neutral-0: #ffffff;
+  --cs-neutral-50: #fafafa;
+  --cs-neutral-100: #f4f4f5;
+  --cs-neutral-150: #ececef;
+  --cs-neutral-200: #e4e4e7;
+  --cs-neutral-300: #d4d4d8;
+  --cs-neutral-400: #a1a1aa;
+  --cs-neutral-500: #71717a;
+  --cs-neutral-600: #52525b;
+  --cs-neutral-700: #3f3f46;
+  --cs-neutral-800: #27272a;
+  --cs-neutral-900: #18181b;
+  --cs-neutral-925: #121215;
+  --cs-neutral-950: #09090b;
+
+  /* ------------------------------------------------------------------------
+   * 2. Restrained Developer Accent (Technical Cobalt)
+   * ---------------------------------------------------------------------- */
+  --cs-blue-50: #eff6ff;
+  --cs-blue-100: #dbeafe;
+  --cs-blue-200: #bfdbfe;
+  --cs-blue-400: #60a5fa;
+  --cs-blue-500: #3b82f6;
+  --cs-blue-600: #2563eb;
+  --cs-blue-700: #1d4ed8;
+
+  /* ------------------------------------------------------------------------
+   * 3. Semantic Surface & Border Tokens (Light)
+   * ---------------------------------------------------------------------- */
+  --cs-canvas: var(--cs-neutral-50);
+  --cs-surface: var(--cs-neutral-0);
+  --cs-surface-subtle: var(--cs-neutral-100);
+  --cs-surface-muted: var(--cs-neutral-200);
+  --cs-surface-elevated: var(--cs-neutral-0);
+  --cs-overlay: rgba(9, 9, 11, 0.36);
+
+  --cs-border-subtle: var(--cs-neutral-150);
+  --cs-border-default: var(--cs-neutral-200);
+  --cs-border-strong: var(--cs-neutral-300);
+
+  /* ------------------------------------------------------------------------
+   * 4. Semantic Foreground / Ink Tokens (Light)
+   * ---------------------------------------------------------------------- */
+  --cs-fg-primary: var(--cs-neutral-950);
+  --cs-fg-secondary: var(--cs-neutral-700);
+  --cs-fg-muted: var(--cs-neutral-500);
+  --cs-fg-disabled: var(--cs-neutral-400);
+
+  /* ------------------------------------------------------------------------
+   * 5. Semantic Restrained Accent Tokens (Light)
+   * ---------------------------------------------------------------------- */
+  --cs-accent: var(--cs-blue-600);
+  --cs-accent-hover: var(--cs-blue-700);
+  --cs-accent-subtle: var(--cs-blue-50);
+  --cs-accent-border: var(--cs-blue-200);
+  --cs-accent-fg: var(--cs-blue-700);
+  --cs-accent-contrast: #ffffff;
+  --cs-focus-ring: rgba(37, 99, 235, 0.28);
+
+  /* ------------------------------------------------------------------------
+   * 6. Typography System
+   * ---------------------------------------------------------------------- */
+  --cs-font-sans:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --cs-font-mono:
+    'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace,
+    SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --cs-text-2xs: 0.6875rem; /* 11px — micro labels, shortcuts, status bar */
+  --cs-text-xs: 0.75rem; /* 12px — badges, inspector labels, mono tokens */
+  --cs-text-sm: 0.8125rem; /* 13px — primary studio controls & navigation */
+  --cs-text-base: 0.875rem; /* 14px — body text, inputs, descriptions */
+  --cs-text-lg: 1rem; /* 16px — panel & section titles */
+  --cs-text-xl: 1.25rem; /* 20px — workspace headings */
+  --cs-text-2xl: 1.5rem; /* 24px — primary page headings */
+
+  /* ------------------------------------------------------------------------
+   * 7. Spacing Scale (4px Base Grid)
+   * ---------------------------------------------------------------------- */
+  --cs-space-0-5: 0.125rem; /* 2px */
+  --cs-space-1: 0.25rem; /* 4px */
+  --cs-space-1-5: 0.375rem; /* 6px */
+  --cs-space-2: 0.5rem; /* 8px */
+  --cs-space-3: 0.75rem; /* 12px */
+  --cs-space-4: 1rem; /* 16px */
+  --cs-space-5: 1.25rem; /* 20px */
+  --cs-space-6: 1.5rem; /* 24px */
+  --cs-space-8: 2rem; /* 32px */
+  --cs-space-10: 2.5rem; /* 40px */
+  --cs-space-12: 3rem; /* 48px */
+
+  /* ------------------------------------------------------------------------
+   * 8. Radii, Elevation & Shell Geometry
+   * ---------------------------------------------------------------------- */
+  --cs-radius-xs: 0.25rem; /* 4px */
+  --cs-radius-sm: 0.375rem; /* 6px */
+  --cs-radius-md: 0.5rem; /* 8px */
+  --cs-radius-lg: 0.625rem; /* 10px */
+
+  --cs-shadow-xs: 0 1px 2px 0 rgba(9, 9, 11, 0.04);
+  --cs-shadow-sm:
+    0 1px 3px 0 rgba(9, 9, 11, 0.06), 0 1px 2px -1px rgba(9, 9, 11, 0.04);
+  --cs-shadow-overlay:
+    0 12px 32px -4px rgba(9, 9, 11, 0.14), 0 4px 12px -2px rgba(9, 9, 11, 0.08);
+
+  --cs-shell-header-h: 3rem; /* 48px */
+  --cs-shell-sidebar-w: 14rem; /* 224px */
+  --cs-shell-sidebar-rail-w: 3.5rem; /* 56px */
+  --cs-shell-inspector-w: 18rem; /* 288px */
+  --cs-shell-statusbar-h: 1.75rem; /* 28px */
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --cs-canvas: var(--cs-neutral-950);
+  --cs-surface: var(--cs-neutral-925);
+  --cs-surface-subtle: #151518;
+  --cs-surface-muted: #202024;
+  --cs-surface-elevated: var(--cs-neutral-900);
+  --cs-overlay: rgba(0, 0, 0, 0.62);
+
+  --cs-border-subtle: #1e1e22;
+  --cs-border-default: var(--cs-neutral-800);
+  --cs-border-strong: var(--cs-neutral-700);
+
+  --cs-fg-primary: var(--cs-neutral-50);
+  --cs-fg-secondary: #b4b4bc;
+  --cs-fg-muted: var(--cs-neutral-500);
+  --cs-fg-disabled: var(--cs-neutral-600);
+
+  --cs-accent: var(--cs-blue-500);
+  --cs-accent-hover: var(--cs-blue-400);
+  --cs-accent-subtle: rgba(59, 130, 246, 0.12);
+  --cs-accent-border: rgba(59, 130, 246, 0.3);
+  --cs-accent-fg: #93c5fd;
+  --cs-accent-contrast: #ffffff;
+  --cs-focus-ring: rgba(59, 130, 246, 0.36);
+
+  --cs-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.32);
+  --cs-shadow-sm:
+    0 1px 3px 0 rgba(0, 0, 0, 0.45), 0 1px 2px -1px rgba(0, 0, 0, 0.35);
+  --cs-shadow-overlay:
+    0 16px 36px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.45);
+}

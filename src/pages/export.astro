@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ModuleContainerWorkspace } from '@/components/workspace';
+
+const moduleScope = [
+  {
+    label: 'Web Serializers',
+    detail: 'Output target slot for CSS Custom Properties and Tailwind theme configuration.',
+  },
+  {
+    label: 'Android Compose',
+    detail: 'Output target slot for Kotlin Color declarations and theme structures.',
+  },
+  {
+    label: 'Android XML Values',
+    detail: 'Output target slot for standard res/values/colors.xml resource files.',
+  },
+] as const;
+
+const inspectorSections = [
+  {
+    title: 'Container Status',
+    properties: [
+      { label: 'Module', value: 'Export', mono: true },
+      { label: 'State', value: 'Shell Ready', mono: true },
+      { label: 'Serializers', value: 'Deferred', mono: true },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Export">
+  <ModuleContainerWorkspace
+    client:load
+    sectionId="export"
+    icon="export"
+    title="Export Workspace"
+    summary="Token serialization workspace container for web stylesheets and Android resource pipelines."
+    emptyTitle="Export module slot ready"
+    emptyDescription="Code serialization and design system token transformers are deferred in Phase 01. Switch target context between Web and Android in the header to verify shell metadata."
+    moduleScope={moduleScope}
+    inspectorSections={inspectorSections}
+  />
+</BaseLayout>
