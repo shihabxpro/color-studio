@@ -16,6 +16,9 @@ export type IconName =
   | 'chevron-right'
   | 'sliders'
   | 'check'
+  | 'copy'
+  | 'reset'
+  | 'pipette'
   | 'terminal'
   | 'grid';
 

@@ -6,9 +6,10 @@ import {
 } from '@/i18n';
 
 describe('Centralized i18n dictionary', () => {
-  it('defaults to Bengali (bn)', () => {
+  it('defaults to Bengali (bn) with concise tool labels', () => {
     expect(DEFAULT_LANGUAGE).toBe('bn');
-    expect(getDictionary().overview.heading).toBe('ওয়ার্কস্পেস ওভারভিউ');
+    expect(getDictionary().picker.pageTitle).toBe('কালার পিকার');
+    expect(getDictionary().picker.reset).toBe('রিসেট');
   });
 
   it('validates supported language codes', () => {
@@ -30,7 +31,7 @@ describe('Centralized i18n dictionary', () => {
 
   it('provides complete English dictionary when requested', () => {
     const enDict = getDictionary('en');
-    expect(enDict.overview.heading).toBe('Workspace Overview');
+    expect(enDict.picker.pageTitle).toBe('Color Picker');
     expect(enDict.nav.items.palettes.label).toBe('Palettes');
   });
 });

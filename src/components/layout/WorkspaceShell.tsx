@@ -131,7 +131,7 @@ export function WorkspaceShell({
   }, []);
 
   const toggleInspector = useCallback(() => {
-    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+    if (typeof window !== 'undefined' && window.innerWidth < 1280) {
       setMobileInspectorOpen((prev) => !prev);
     } else {
       toggleDesktopInspector();
@@ -264,7 +264,7 @@ export function WorkspaceShell({
           >
             {toolbar ? toolbar(t) : null}
             <div className="flex-1 min-w-0 lg:overflow-y-auto studio-grid-bg">
-              <div className="mx-auto w-full max-w-6xl p-3.5 sm:p-6 min-w-0">
+              <div className="mx-auto w-full max-w-5xl p-3 sm:p-5 min-w-0">
                 {children(t)}
               </div>
             </div>

@@ -31,6 +31,22 @@ export {
   getTriadicHarmony,
   HARMONY_TYPES,
 } from './harmony';
+export {
+  createPickerState,
+  DEFAULT_PICKER_HEX,
+  getContrastingInk,
+  getNormalizedPointerPosition,
+  parseFormatInput,
+  toAndroidComposeLiteral,
+  updatePickerFromHsl,
+  updatePickerFromHsv,
+  updatePickerFromOklch,
+  updatePickerFromRgb,
+  type FormatParseResult,
+  type FormatValidationErrorKey,
+  type HsvColor,
+  type PickerColorState,
+} from './picker';
 export type {
   ColorFormat,
   ColorInput,

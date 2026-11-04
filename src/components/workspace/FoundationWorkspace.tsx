@@ -10,7 +10,6 @@ import {
   Input,
   Kbd,
   Panel,
-  SectionHeader,
   SegmentedControl,
   Toolbar,
 } from '@/components/ui';
@@ -140,17 +139,7 @@ export function FoundationWorkspace() {
         ] as const;
 
         return (
-          <div className="space-y-5 sm:space-y-6 min-w-0">
-            <SectionHeader
-              title={f.heading}
-              badge={
-                <Badge variant="outline" mono>
-                  v0.1.0
-                </Badge>
-              }
-              description={f.description}
-            />
-
+          <div className="space-y-4 min-w-0">
             {/* 1. Semantic Surface, Border & Restrained Accent Tokens */}
             <Panel
               title={f.tokensPanel.title}

@@ -6,15 +6,8 @@ export type { Language };
 export interface ModuleTranslation {
   pageTitle: string;
   toolbarTitle: string;
-  toolbarBadge: string;
-  heading: string;
-  statusBadge: string;
-  summary: string;
   emptyTitle: string;
   emptyDescription: string;
-  scopeHeading: string;
-  scopeBadge: string;
-  moduleScope: readonly { label: string; detail: string }[];
   inspectorSections: InspectorSection[];
 }
 
@@ -76,40 +69,37 @@ export interface TranslationDictionary {
     targetPrefix: string;
   };
   common: {
-    backToOverview: string;
-    inspectFoundation: string;
-    viewModuleSlots: string;
-    reviewPrimitives: string;
+    backToPicker: string;
     returnToWorkspace: string;
   };
-  overview: {
+  picker: {
     pageTitle: string;
     toolbarTitle: string;
-    toolbarBadge: string;
-    heading: string;
-    phaseBadge: string;
-    description: string;
-    emptyMeta: string;
-    emptyTitle: string;
-    emptyDescription: string;
-    webPanel: {
-      title: string;
-      description: string;
-      tokenOutputLabel: string;
-      colorNotationLabel: string;
+    reset: string;
+    resetAria: string;
+    systemPicker: string;
+    canvasAria: string;
+    hueLabel: string;
+    channelsLabel: string;
+    formatsTitle: string;
+    copy: string;
+    copied: string;
+    inSrgb: string;
+    mappedToSrgb: string;
+    previewSample: string;
+    inspectorColorSection: string;
+    inspectorGamutLabel: string;
+    inspectorLightnessLabel: string;
+    inspectorChromaLabel: string;
+    inspectorHueLabel: string;
+    inspectorComposeLabel: string;
+    inspectorCssVarLabel: string;
+    errors: {
+      invalidHex: string;
+      invalidRgb: string;
+      invalidHsl: string;
+      invalidOklch: string;
     };
-    androidPanel: {
-      title: string;
-      description: string;
-      composeTargetLabel: string;
-      resourceTargetLabel: string;
-    };
-    shortcutsPanel: {
-      title: string;
-      badge: string;
-      items: readonly { label: string; keys: readonly string[] }[];
-    };
-    inspectorSections: InspectorSection[];
   };
   modules: Record<
     Exclude<WorkspaceSectionId, 'workspace' | 'foundation'>,
@@ -119,8 +109,6 @@ export interface TranslationDictionary {
     pageTitle: string;
     toolbarTitle: string;
     toolbarBadge: string;
-    heading: string;
-    description: string;
     tokensPanel: {
       title: string;
       badge: string;

@@ -125,28 +125,22 @@ export function MobileNavDrawer({
                           aria-current={isActive ? 'page' : undefined}
                           onClick={onClose}
                           className={cn(
-                            'flex items-start gap-2.5 rounded-sm px-2.5 py-2 transition-colors',
+                            'flex items-center gap-2.5 rounded-sm px-2.5 h-9 transition-colors',
                             isActive
-                              ? 'bg-surface-subtle text-ink border border-line'
+                              ? 'bg-surface-subtle text-ink font-medium border border-line'
                               : 'text-ink-secondary border border-transparent hover:bg-surface-subtle/60 hover:text-ink'
                           )}
                         >
                           <Icon
                             name={item.icon}
-                            size={16}
-                            className={cn(
-                              'mt-0.5',
+                            size={15}
+                            className={
                               isActive ? 'text-accent' : 'text-ink-muted'
-                            )}
+                            }
                           />
-                          <div className="min-w-0">
-                            <div className="text-[13px] font-medium leading-snug">
-                              {localized.label}
-                            </div>
-                            <p className="mt-0.5 text-[11px] text-ink-muted leading-snug break-words">
-                              {localized.description}
-                            </p>
-                          </div>
+                          <span className="text-[13px] truncate">
+                            {localized.label}
+                          </span>
                         </a>
                       </li>
                     );

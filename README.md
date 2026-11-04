@@ -17,8 +17,9 @@ Minimal, professional color design workspace for web and Android developers — 
 src/
 ├── components/
 │   ├── layout/        # AppHeader, AppSidebar, MobileNavDrawer, InspectorPanel, StatusBar, WorkspaceShell
+│   ├── picker/        # SaturationValueCanvas, HueSlider, ChannelSliders, FormatInputsPanel
 │   ├── ui/            # Button, IconButton, Input, Badge, SegmentedControl, Panel, Card, Toolbar, Divider, EmptyState, Kbd, Icon
-│   └── workspace/     # OverviewWorkspace, ModuleContainerWorkspace, FoundationWorkspace, NotFoundWorkspace
+│   └── workspace/     # ColorPickerWorkspace, ModuleContainerWorkspace, FoundationWorkspace, NotFoundWorkspace
 ├── config/
 │   ├── navigation.ts  # Declarative navigation groups & route definitions
 │   └── site.ts        # Workspace metadata, Web/Android target specs, shell shortcuts
@@ -29,7 +30,8 @@ src/
 ├── layouts/
 │   └── BaseLayout.astro
 ├── lib/
-│   ├── color/         # Pure TypeScript color engine (validation, gamut, convert, harmony) + unit tests
+│   ├── color/         # Pure TypeScript color engine (validation, gamut, convert, harmony, picker) + unit tests
+│   ├── clipboard.ts   # One-click clipboard copy with iframe fallback
 │   ├── cn.ts          # Zero-dependency className helper
 │   ├── storage.ts     # Safe client preference persistence (cs:lang, cs:theme, panel states)
 │   └── url.ts         # Subpath-aware URL helper for GitHub Pages

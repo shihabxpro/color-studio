@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getDictionary } from '@/i18n';
-import { OverviewWorkspace } from '@/components/workspace';
+import { ColorPickerWorkspace } from '@/components/workspace';
 
 const t = getDictionary('bn');
 ---
 
-<BaseLayout title={t.overview.pageTitle}>
-  <OverviewWorkspace client:load />
+<BaseLayout title={t.picker.pageTitle}>
+  <ColorPickerWorkspace client:load />
 </BaseLayout>

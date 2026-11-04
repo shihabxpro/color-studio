@@ -171,6 +171,28 @@ function renderPaths(name: IconName) {
       );
     case 'check':
       return <polyline points="5 12.5 9.5 17 19 7" />;
+    case 'copy':
+      return (
+        <>
+          <rect x="9" y="9" width="11" height="11" rx="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </>
+      );
+    case 'reset':
+      return (
+        <>
+          <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+          <polyline points="3 3 3 8 8 8" />
+        </>
+      );
+    case 'pipette':
+      return (
+        <>
+          <path d="m2 22 1-1h3l9-9" />
+          <path d="M3 21v-3l9-9" />
+          <path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z" />
+        </>
+      );
     case 'terminal':
       return (
         <>
