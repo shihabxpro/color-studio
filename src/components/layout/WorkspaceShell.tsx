@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { ALL_NAV_ITEMS, getNavItemById } from '@/config/navigation';
+import { ALL_NAV_ITEMS } from '@/config/navigation';
 import { SITE_CONFIG } from '@/config/site';
+import {
+  DEFAULT_LANGUAGE,
+  getDictionary,
+  isSupportedLanguage,
+  type TranslationDictionary,
+} from '@/i18n';
 import { readStorage, STORAGE_KEYS, writeStorage } from '@/lib/storage';
 import type { InspectorSection, WorkspaceSectionId } from '@/types/navigation';
-import type { PlatformTarget, ThemeMode } from '@/types/ui';
+import type { Language, PlatformTarget, ThemeMode } from '@/types/ui';
 import { AppHeader } from './AppHeader';
 import { AppSidebar } from './AppSidebar';
 import { InspectorPanel } from './InspectorPanel';
@@ -13,17 +19,20 @@ import { WorkspaceContext } from './WorkspaceContext';
 
 export interface WorkspaceShellProps {
   activeSection: WorkspaceSectionId;
-  inspectorSections?: InspectorSection[];
-  toolbar?: ReactNode;
-  children: ReactNode;
+  pageTitle?: (t: TranslationDictionary) => string;
+  inspectorSections?: (t: TranslationDictionary) => InspectorSection[];
+  toolbar?: (t: TranslationDictionary) => ReactNode;
+  children: (t: TranslationDictionary) => ReactNode;
 }
 
 export function WorkspaceShell({
   activeSection,
+  pageTitle,
   inspectorSections,
   toolbar,
   children,
 }: WorkspaceShellProps) {
+  const [lang, setLangState] = useState<Language>(DEFAULT_LANGUAGE);
   const [theme, setThemeState] = useState<ThemeMode>('light');
   const [platformTarget, setPlatformTargetState] =
     useState<PlatformTarget>('web');
@@ -34,8 +43,20 @@ export function WorkspaceShell({
   const [mobileInspectorOpen, setMobileInspectorOpen] =
     useState<boolean>(false);
 
-  // Hydrate persisted shell preferences on mount
+  // Hydrate persisted language & shell preferences on mount
   useEffect(() => {
+    const storedLang = readStorage(STORAGE_KEYS.language);
+    const domLang = document.documentElement.getAttribute('data-lang');
+    const resolvedLang: Language = isSupportedLanguage(storedLang)
+      ? storedLang
+      : isSupportedLanguage(domLang)
+        ? domLang
+        : DEFAULT_LANGUAGE;
+
+    setLangState(resolvedLang);
+    document.documentElement.lang = resolvedLang;
+    document.documentElement.setAttribute('data-lang', resolvedLang);
+
     const domTheme = document.documentElement.getAttribute('data-theme');
     if (domTheme === 'dark' || domTheme === 'light') {
       setThemeState(domTheme);
@@ -56,6 +77,27 @@ export function WorkspaceShell({
       setDesktopInspectorOpen(false);
     }
   }, []);
+
+  const t = useMemo(() => getDictionary(lang), [lang]);
+
+  // Keep document title synchronized with selected language
+  useEffect(() => {
+    const resolvedTitle = pageTitle
+      ? pageTitle(t)
+      : t.nav.items[activeSection].label;
+    document.title = `${resolvedTitle} — ${SITE_CONFIG.name}`;
+  }, [activeSection, pageTitle, t]);
+
+  const setLanguage = useCallback((next: Language) => {
+    setLangState(next);
+    document.documentElement.lang = next;
+    document.documentElement.setAttribute('data-lang', next);
+    writeStorage(STORAGE_KEYS.language, next);
+  }, []);
+
+  const toggleLanguage = useCallback(() => {
+    setLanguage(lang === 'bn' ? 'en' : 'bn');
+  }, [lang, setLanguage]);
 
   const setTheme = useCallback((next: ThemeMode) => {
     setThemeState(next);
@@ -135,11 +177,18 @@ export function WorkspaceShell({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeSection, toggleSidebar, toggleInspector]);
 
-  const currentNav = getNavItemById(activeSection);
+  const resolvedInspectorSections = useMemo(
+    () => (inspectorSections ? inspectorSections(t) : []),
+    [inspectorSections, t]
+  );
 
   const contextValue = useMemo(
     () => ({
       activeSection,
+      lang,
+      setLanguage,
+      toggleLanguage,
+      t,
       theme,
       setTheme,
       toggleTheme,
@@ -152,6 +201,10 @@ export function WorkspaceShell({
     }),
     [
       activeSection,
+      lang,
+      setLanguage,
+      toggleLanguage,
+      t,
       theme,
       setTheme,
       toggleTheme,
@@ -167,9 +220,12 @@ export function WorkspaceShell({
 
   return (
     <WorkspaceContext.Provider value={contextValue}>
-      <div className="min-h-dvh lg:h-dvh lg:overflow-hidden flex flex-col bg-canvas text-ink">
+      <div className="min-h-dvh w-full max-w-full overflow-x-clip lg:h-dvh lg:overflow-hidden flex flex-col bg-canvas text-ink">
         <AppHeader
           activeSection={activeSection}
+          lang={lang}
+          onLanguageChange={setLanguage}
+          t={t}
           theme={theme}
           onToggleTheme={toggleTheme}
           platformTarget={platformTarget}
@@ -186,26 +242,30 @@ export function WorkspaceShell({
           open={mobileNavOpen}
           onClose={() => setMobileNavOpen(false)}
           activeSection={activeSection}
+          lang={lang}
+          onLanguageChange={setLanguage}
+          t={t}
           platformTarget={platformTarget}
           onPlatformChange={setPlatformTarget}
           theme={theme}
           onToggleTheme={toggleTheme}
         />
 
-        <div className="flex-1 min-h-0 flex">
+        <div className="flex-1 min-h-0 min-w-0 flex">
           <AppSidebar
             activeSection={activeSection}
             collapsed={sidebarCollapsed}
+            t={t}
           />
 
           <main
             id="workspace-main"
-            className="flex-1 min-w-0 flex flex-col bg-canvas"
+            className="flex-1 min-w-0 max-w-full flex flex-col bg-canvas"
           >
-            {toolbar}
-            <div className="flex-1 overflow-y-auto studio-grid-bg">
-              <div className="mx-auto w-full max-w-6xl p-4 sm:p-6">
-                {children}
+            {toolbar ? toolbar(t) : null}
+            <div className="flex-1 min-w-0 lg:overflow-y-auto studio-grid-bg">
+              <div className="mx-auto w-full max-w-6xl p-3.5 sm:p-6 min-w-0">
+                {children(t)}
               </div>
             </div>
           </main>
@@ -215,10 +275,11 @@ export function WorkspaceShell({
             mobileOpen={mobileInspectorOpen}
             onCloseMobile={() => setMobileInspectorOpen(false)}
             onToggleDesktop={toggleDesktopInspector}
-            sectionTitle={currentNav.label}
+            sectionTitle={t.nav.items[activeSection].label}
             platformTarget={platformTarget}
             theme={theme}
-            sections={inspectorSections}
+            t={t}
+            sections={resolvedInspectorSections}
           />
         </div>
 
@@ -226,6 +287,7 @@ export function WorkspaceShell({
           activeSection={activeSection}
           platformTarget={platformTarget}
           theme={theme}
+          t={t}
         />
       </div>
     </WorkspaceContext.Provider>

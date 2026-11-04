@@ -1,6 +1,7 @@
 ---
 import '@/styles/global.css';
 import { SITE_CONFIG } from '@/config/site';
+import { DEFAULT_LANGUAGE, getDictionary } from '@/i18n';
 import { withBase } from '@/lib/url';
 
 interface Props {
@@ -8,9 +9,11 @@ interface Props {
   description?: string;
 }
 
+const defaultDict = getDictionary(DEFAULT_LANGUAGE);
+
 const {
   title = SITE_CONFIG.name,
-  description = SITE_CONFIG.description,
+  description = defaultDict.meta.siteDescription,
 } = Astro.props;
 
 const pageTitle =
@@ -18,7 +21,7 @@ const pageTitle =
 ---
 
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="bn" data-lang="bn" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,9 +32,17 @@ const pageTitle =
     <script is:inline>
       (function () {
         try {
-          var saved = localStorage.getItem('cs:theme');
-          var theme = saved === 'dark' || saved === 'light' ? saved : 'light';
+          var savedTheme = localStorage.getItem('cs:theme');
+          var theme =
+            savedTheme === 'dark' || savedTheme === 'light'
+              ? savedTheme
+              : 'light';
           document.documentElement.setAttribute('data-theme', theme);
+
+          var savedLang = localStorage.getItem('cs:lang');
+          var lang = savedLang === 'en' || savedLang === 'bn' ? savedLang : 'bn';
+          document.documentElement.lang = lang;
+          document.documentElement.setAttribute('data-lang', lang);
         } catch (_) {}
       })();
     </script>
@@ -41,7 +52,7 @@ const pageTitle =
       href="#workspace-main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-1.5 focus:rounded-sm focus:bg-surface focus:text-ink focus:border focus:border-accent focus:text-[12px] focus:font-medium"
     >
-      Skip to workspace
+      {defaultDict.meta.skipToWorkspace}
     </a>
     <slot />
   </body>

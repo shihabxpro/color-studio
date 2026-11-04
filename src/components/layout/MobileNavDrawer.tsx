@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { NAVIGATION_GROUPS } from '@/config/navigation';
 import { SITE_CONFIG } from '@/config/site';
+import type { TranslationDictionary } from '@/i18n';
 import type { WorkspaceSectionId } from '@/types/navigation';
-import type { PlatformTarget, ThemeMode } from '@/types/ui';
+import type { Language, PlatformTarget, ThemeMode } from '@/types/ui';
 import { cn } from '@/lib/cn';
 import {
   Badge,
@@ -18,10 +19,18 @@ const PLATFORM_OPTIONS: readonly SegmentedOption<PlatformTarget>[] = [
   { value: 'android', label: 'Android' },
 ];
 
+const LANGUAGE_OPTIONS: readonly SegmentedOption<Language>[] = [
+  { value: 'bn', label: 'বাংলা' },
+  { value: 'en', label: 'English' },
+];
+
 export interface MobileNavDrawerProps {
   open: boolean;
   onClose: () => void;
   activeSection: WorkspaceSectionId;
+  lang: Language;
+  onLanguageChange: (lang: Language) => void;
+  t: TranslationDictionary;
   platformTarget: PlatformTarget;
   onPlatformChange: (target: PlatformTarget) => void;
   theme: ThemeMode;
@@ -32,6 +41,9 @@ export function MobileNavDrawer({
   open,
   onClose,
   activeSection,
+  lang,
+  onLanguageChange,
+  t,
   platformTarget,
   onPlatformChange,
   theme,
@@ -63,7 +75,7 @@ export function MobileNavDrawer({
       id="mobile-nav-drawer"
       role="dialog"
       aria-modal="true"
-      aria-label="Navigation menu"
+      aria-label={t.nav.mobileDrawerAriaLabel}
       className="fixed inset-0 z-40 flex lg:hidden"
     >
       {/* Backdrop */}
@@ -74,79 +86,98 @@ export function MobileNavDrawer({
       />
 
       {/* Drawer Panel */}
-      <div className="relative z-10 flex w-72 max-w-[85vw] flex-col bg-surface-elevated border-r border-line shadow-overlay">
-        <div className="h-12 px-3.5 border-b border-line flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-sm bg-ink text-canvas">
+      <div className="relative z-10 flex w-72 max-w-[86vw] flex-col bg-surface-elevated border-r border-line shadow-overlay">
+        <div className="h-12 px-3.5 border-b border-line flex items-center justify-between gap-2 shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="flex h-6 w-6 items-center justify-center rounded-sm bg-ink text-canvas shrink-0">
               <Icon name="studio" size={14} />
             </span>
-            <span className="text-[13px] font-semibold text-ink">
+            <span className="text-[13px] font-semibold text-ink truncate">
               {SITE_CONFIG.name}
             </span>
             <Badge variant="outline" mono>
               v{SITE_CONFIG.version}
             </Badge>
           </div>
-          <IconButton label="Close menu" size="sm" onClick={onClose}>
+          <IconButton label={t.header.closeMenu} size="sm" onClick={onClose}>
             <Icon name="close" size={16} />
           </IconButton>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-3 space-y-5">
-          {NAVIGATION_GROUPS.map((group) => (
-            <div key={group.id} className="space-y-1.5">
-              <div className="px-2.5 text-[11px] font-medium uppercase tracking-wider text-ink-muted">
-                {group.label}
-              </div>
-              <ul className="space-y-1">
-                {group.items.map((item) => {
-                  const isActive = item.id === activeSection;
-                  return (
-                    <li key={item.id}>
-                      <a
-                        href={item.href}
-                        aria-current={isActive ? 'page' : undefined}
-                        onClick={onClose}
-                        className={cn(
-                          'flex items-start gap-2.5 rounded-sm px-2.5 py-2 transition-colors',
-                          isActive
-                            ? 'bg-surface-subtle text-ink border border-line'
-                            : 'text-ink-secondary border border-transparent hover:bg-surface-subtle/60 hover:text-ink'
-                        )}
-                      >
-                        <Icon
-                          name={item.icon}
-                          size={16}
+          {NAVIGATION_GROUPS.map((group) => {
+            const groupLabel =
+              group.id === 'studio' ? t.nav.groups.studio : t.nav.groups.system;
+
+            return (
+              <div key={group.id} className="space-y-1.5">
+                <div className="px-2.5 text-[11px] font-semibold text-ink-muted">
+                  {groupLabel}
+                </div>
+                <ul className="space-y-1">
+                  {group.items.map((item) => {
+                    const isActive = item.id === activeSection;
+                    const localized = t.nav.items[item.id];
+                    return (
+                      <li key={item.id}>
+                        <a
+                          href={item.href}
+                          aria-current={isActive ? 'page' : undefined}
+                          onClick={onClose}
                           className={cn(
-                            'mt-0.5',
-                            isActive ? 'text-accent' : 'text-ink-muted'
+                            'flex items-start gap-2.5 rounded-sm px-2.5 py-2 transition-colors',
+                            isActive
+                              ? 'bg-surface-subtle text-ink border border-line'
+                              : 'text-ink-secondary border border-transparent hover:bg-surface-subtle/60 hover:text-ink'
                           )}
-                        />
-                        <div className="min-w-0">
-                          <div className="text-[13px] font-medium leading-tight">
-                            {item.label}
+                        >
+                          <Icon
+                            name={item.icon}
+                            size={16}
+                            className={cn(
+                              'mt-0.5',
+                              isActive ? 'text-accent' : 'text-ink-muted'
+                            )}
+                          />
+                          <div className="min-w-0">
+                            <div className="text-[13px] font-medium leading-snug">
+                              {localized.label}
+                            </div>
+                            <p className="mt-0.5 text-[11px] text-ink-muted leading-snug break-words">
+                              {localized.description}
+                            </p>
                           </div>
-                          <p className="mt-0.5 text-[11px] text-ink-muted leading-snug">
-                            {item.description}
-                          </p>
-                        </div>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            );
+          })}
         </nav>
 
-        {/* Mobile Environment & Surface Controls */}
-        <div className="p-3 border-t border-line bg-surface-subtle/50 space-y-3">
+        {/* Mobile Language, Platform & Surface Controls */}
+        <div className="p-3 border-t border-line bg-surface-subtle/50 space-y-2.5 shrink-0">
           <div className="flex items-center justify-between gap-2">
             <span className="text-[12px] font-medium text-ink-secondary">
-              Target
+              {t.nav.languageLabel}
             </span>
             <SegmentedControl
-              label="Target platform"
+              label={t.header.languageGroupLabel}
+              options={LANGUAGE_OPTIONS}
+              value={lang}
+              onChange={onLanguageChange}
+              size="sm"
+            />
+          </div>
+
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[12px] font-medium text-ink-secondary">
+              {t.nav.targetLabel}
+            </span>
+            <SegmentedControl
+              label={t.header.platformGroupLabel}
               options={PLATFORM_OPTIONS}
               value={platformTarget}
               onChange={onPlatformChange}
@@ -163,7 +194,7 @@ export function MobileNavDrawer({
             }
             className="w-full justify-center"
           >
-            {theme === 'light' ? 'Switch to Dark Surface' : 'Switch to Light Surface'}
+            {theme === 'light' ? t.nav.switchToDarkFull : t.nav.switchToLightFull}
           </Button>
         </div>
       </div>

@@ -1,44 +1,15 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getDictionary } from '@/i18n';
 import { ModuleContainerWorkspace } from '@/components/workspace';
 
-const moduleScope = [
-  {
-    label: 'Foreground / Surface Pairs',
-    detail: 'Layout slot for evaluating text, icon, and border legibility on neutral and tinted surfaces.',
-  },
-  {
-    label: 'Multi-Platform Preview',
-    detail: 'Reserved stage for comparing web CSS rendering and Android surface elevation.',
-  },
-  {
-    label: 'Diagnostic Readouts',
-    detail: 'Inspector property rows structured for future contrast ratio metrics.',
-  },
-] as const;
-
-const inspectorSections = [
-  {
-    title: 'Container Status',
-    properties: [
-      { label: 'Module', value: 'Contrast', mono: true },
-      { label: 'State', value: 'Shell Ready', mono: true },
-      { label: 'Audit Engine', value: 'Deferred', mono: true },
-    ],
-  },
-];
+const t = getDictionary('bn');
 ---
 
-<BaseLayout title="Contrast">
+<BaseLayout title={t.modules.contrast.pageTitle}>
   <ModuleContainerWorkspace
     client:load
     sectionId="contrast"
     icon="contrast"
-    title="Contrast Workspace"
-    summary="Dedicated workspace shell reserved for surface-to-ink legibility auditing across web and Android targets."
-    emptyTitle="Contrast module slot ready"
-    emptyDescription="Accessibility calculation and contrast scoring engines are deferred beyond the UI foundation phase. The layout shell and inspector region are ready for integration."
-    moduleScope={moduleScope}
-    inspectorSections={inspectorSections}
   />
 </BaseLayout>

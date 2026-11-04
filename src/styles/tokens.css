@@ -74,11 +74,15 @@
   --cs-focus-ring: rgba(37, 99, 235, 0.28);
 
   /* ------------------------------------------------------------------------
-   * 6. Typography System
+   * 6. Typography System (Hind Siliguri primary for Bengali + Mono for code)
    * ---------------------------------------------------------------------- */
-  --cs-font-sans:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
+  --cs-font-bengali:
+    'Hind Siliguri', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --cs-font-latin:
+    'Inter', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --cs-font-sans: var(--cs-font-bengali);
   --cs-font-mono:
     'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace,
     SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -160,3 +164,8 @@
   --cs-shadow-overlay:
     0 16px 36px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.45);
 }
+
+[data-lang='en'] {
+  --cs-font-sans: var(--cs-font-latin);
+}
+

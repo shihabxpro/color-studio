@@ -17,7 +17,7 @@ export function Toolbar({
     <div
       role="toolbar"
       className={cn(
-        'min-h-10 px-3 sm:px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 bg-surface border-b border-line shrink-0',
+        'w-full max-w-full min-w-0 min-h-10 px-3 sm:px-4 py-1.5 flex flex-wrap items-center justify-between gap-2 bg-surface border-b border-line shrink-0',
         className
       )}
       {...props}
@@ -27,7 +27,7 @@ export function Toolbar({
         {children}
       </div>
       {trailing && (
-        <div className="flex items-center gap-1.5 shrink-0">{trailing}</div>
+        <div className="flex items-center gap-1.5 min-w-0 flex-wrap">{trailing}</div>
       )}
     </div>
   );

@@ -7,23 +7,29 @@
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "start": "astro dev --host 0.0.0.0",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "check": "astro check",
     "build": "astro check && astro build",
     "preview": "astro preview --host 0.0.0.0"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",
+    "@fontsource/hind-siliguri": "^5.3.0",
     "@tailwindcss/vite": "^4.3.4",
     "astro": "^5.18.2",
+    "culori": "^4.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.3.4"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@types/culori": "^4.0.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
   },
   "overrides": {
     "undici": "^7.30.1"

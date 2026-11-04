@@ -24,7 +24,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-md border border-line',
+        'min-w-0 max-w-full rounded-md border border-line',
         subtle ? 'bg-surface-subtle' : 'bg-surface shadow-xs',
         PADDING_CLASSES[padding],
         className

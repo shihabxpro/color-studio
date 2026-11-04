@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { SITE_CONFIG } from '@/config/site';
+import type { TranslationDictionary } from '@/i18n';
 import type { InspectorSection } from '@/types/navigation';
 import type { PlatformTarget, ThemeMode } from '@/types/ui';
 import { cn } from '@/lib/cn';
@@ -13,6 +14,7 @@ export interface InspectorPanelProps {
   sectionTitle: string;
   platformTarget: PlatformTarget;
   theme: ThemeMode;
+  t: TranslationDictionary;
   sections?: InspectorSection[];
 }
 
@@ -24,28 +26,37 @@ export function InspectorPanel({
   sectionTitle,
   platformTarget,
   theme,
+  t,
   sections = [],
 }: InspectorPanelProps) {
   useEffect(() => {
     if (!mobileOpen) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onCloseMobile();
       }
     };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [mobileOpen, onCloseMobile]);
 
   const platformSpec = SITE_CONFIG.platforms[platformTarget];
 
   const panelBody = (
-    <div className="flex-1 overflow-y-auto p-3.5 space-y-4">
+    <div className="flex-1 overflow-y-auto p-3.5 space-y-4 min-w-0">
       {/* Active Context Summary */}
       <div className="space-y-2.5">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-ink-muted">
-            Workspace Context
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-[11px] font-semibold text-ink-muted truncate">
+            {t.inspector.workspaceContext}
           </span>
           <Badge variant="accent" mono>
             {platformSpec.label}
@@ -54,19 +65,23 @@ export function InspectorPanel({
 
         <dl className="space-y-2 text-[12px]">
           <div className="flex items-center justify-between gap-2">
-            <dt className="text-ink-muted">Active View</dt>
-            <dd className="font-medium text-ink">{sectionTitle}</dd>
-          </div>
-          <div className="flex items-center justify-between gap-2">
-            <dt className="text-ink-muted">Surface Calibration</dt>
-            <dd className="font-mono text-[11px] text-ink-secondary">
-              Neutral (C=0)
+            <dt className="text-ink-muted shrink-0">{t.inspector.activeView}</dt>
+            <dd className="font-medium text-ink text-right truncate">
+              {sectionTitle}
             </dd>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <dt className="text-ink-muted">Theme Mode</dt>
-            <dd className="font-mono text-[11px] text-ink-secondary capitalize">
-              {theme}
+            <dt className="text-ink-muted shrink-0">
+              {t.inspector.surfaceCalibration}
+            </dt>
+            <dd className="text-[11px] text-ink-secondary text-right truncate">
+              {t.inspector.neutralValue}
+            </dd>
+          </div>
+          <div className="flex items-center justify-between gap-2">
+            <dt className="text-ink-muted shrink-0">{t.inspector.themeMode}</dt>
+            <dd className="text-[11px] text-ink-secondary text-right">
+              {theme === 'light' ? t.inspector.themeLight : t.inspector.themeDark}
             </dd>
           </div>
         </dl>
@@ -76,19 +91,19 @@ export function InspectorPanel({
 
       {/* Target Platform Specification */}
       <div className="space-y-2">
-        <span className="block text-[11px] font-medium uppercase tracking-wider text-ink-muted">
-          Target Specification
+        <span className="block text-[11px] font-semibold text-ink-muted">
+          {t.inspector.targetSpecification}
         </span>
         <ul className="space-y-1.5">
           {platformSpec.formats.map((format) => (
             <li
               key={format}
-              className="flex items-center justify-between px-2.5 py-1.5 rounded-sm bg-surface-subtle border border-line-subtle text-[12px]"
+              className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-sm bg-surface-subtle border border-line-subtle text-[12px]"
             >
-              <span className="font-mono text-[11px] text-ink-secondary">
+              <span className="font-mono text-[11px] text-ink-secondary truncate">
                 {format}
               </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-ink-disabled" />
+              <span className="h-1.5 w-1.5 rounded-full bg-ink-disabled shrink-0" />
             </li>
           ))}
         </ul>
@@ -98,19 +113,21 @@ export function InspectorPanel({
       {sections.map((section) => (
         <div key={section.title} className="space-y-2.5 pt-1">
           <Divider subtle />
-          <span className="block pt-1.5 text-[11px] font-medium uppercase tracking-wider text-ink-muted">
+          <span className="block pt-1.5 text-[11px] font-semibold text-ink-muted">
             {section.title}
           </span>
           <dl className="space-y-2 text-[12px]">
             {section.properties.map((prop) => (
               <div
                 key={prop.label}
-                className="flex items-center justify-between gap-3"
+                className="flex items-center justify-between gap-3 min-w-0"
               >
-                <dt className="text-ink-muted truncate">{prop.label}</dt>
+                <dt className="text-ink-muted truncate shrink-0">
+                  {prop.label}
+                </dt>
                 <dd
                   className={cn(
-                    'text-ink-secondary text-right truncate',
+                    'text-ink-secondary text-right truncate min-w-0',
                     prop.mono && 'font-mono text-[11px]'
                   )}
                 >
@@ -129,17 +146,17 @@ export function InspectorPanel({
       {/* Desktop Inline Inspector */}
       {desktopOpen && (
         <aside
-          aria-label="Workspace inspector"
+          aria-label={t.inspector.ariaLabel}
           className="hidden lg:flex w-72 shrink-0 flex-col bg-surface border-l border-line"
         >
           <div className="h-10 px-3.5 border-b border-line flex items-center justify-between gap-2 shrink-0">
-            <span className="text-[12px] font-semibold tracking-tight text-ink">
-              Inspector
+            <span className="text-[12px] font-semibold text-ink">
+              {t.inspector.title}
             </span>
             <div className="flex items-center gap-1.5">
               <Kbd>{SITE_CONFIG.shortcuts.toggleInspector}</Kbd>
               <IconButton
-                label="Collapse inspector"
+                label={t.inspector.collapseLabel}
                 size="sm"
                 onClick={onToggleDesktop}
               >
@@ -156,7 +173,7 @@ export function InspectorPanel({
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Workspace inspector"
+          aria-label={t.inspector.ariaLabel}
           className="fixed inset-0 z-40 flex justify-end lg:hidden"
         >
           <div
@@ -167,10 +184,10 @@ export function InspectorPanel({
           <aside className="relative z-10 flex w-80 max-w-[88vw] flex-col bg-surface-elevated border-l border-line shadow-overlay">
             <div className="h-12 px-3.5 border-b border-line flex items-center justify-between gap-2 shrink-0">
               <span className="text-[13px] font-semibold text-ink">
-                Inspector
+                {t.inspector.title}
               </span>
               <IconButton
-                label="Close inspector"
+                label={t.inspector.closeLabel}
                 size="sm"
                 onClick={onCloseMobile}
               >

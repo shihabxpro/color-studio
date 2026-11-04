@@ -1,7 +1,7 @@
 import { SITE_CONFIG } from '@/config/site';
-import { getNavItemById } from '@/config/navigation';
+import type { TranslationDictionary } from '@/i18n';
 import { withBase } from '@/lib/url';
-import type { PlatformTarget, ThemeMode } from '@/types/ui';
+import type { Language, PlatformTarget, ThemeMode } from '@/types/ui';
 import type { WorkspaceSectionId } from '@/types/navigation';
 import {
   Badge,
@@ -9,7 +9,7 @@ import {
   Icon,
   IconButton,
   SegmentedControl,
-   type SegmentedOption,
+  type SegmentedOption,
 } from '@/components/ui';
 
 const PLATFORM_OPTIONS: readonly SegmentedOption<PlatformTarget>[] = [
@@ -25,8 +25,16 @@ const PLATFORM_OPTIONS: readonly SegmentedOption<PlatformTarget>[] = [
   },
 ];
 
+const LANGUAGE_OPTIONS: readonly SegmentedOption<Language>[] = [
+  { value: 'bn', label: 'বাংলা' },
+  { value: 'en', label: 'EN' },
+];
+
 export interface AppHeaderProps {
   activeSection: WorkspaceSectionId;
+  lang: Language;
+  onLanguageChange: (lang: Language) => void;
+  t: TranslationDictionary;
   theme: ThemeMode;
   onToggleTheme: () => void;
   platformTarget: PlatformTarget;
@@ -41,6 +49,9 @@ export interface AppHeaderProps {
 
 export function AppHeader({
   activeSection,
+  lang,
+  onLanguageChange,
+  t,
   theme,
   onToggleTheme,
   platformTarget,
@@ -52,17 +63,18 @@ export function AppHeader({
   inspectorOpen,
   onToggleInspector,
 }: AppHeaderProps) {
-  const currentNav = getNavItemById(activeSection);
+  const activeItemLabel = t.nav.items[activeSection].label;
 
   return (
-    <header className="h-12 px-3 sm:px-4 bg-surface border-b border-line flex items-center justify-between gap-3 shrink-0 z-20">
+    <header className="w-full max-w-full h-12 px-2.5 sm:px-4 bg-surface border-b border-line flex items-center justify-between gap-2 shrink-0 z-20">
       {/* Left: Navigation toggles + Brand + Breadcrumb */}
-      <div className="flex items-center gap-2 min-w-0">
+      <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
         <IconButton
-          label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          label={mobileNavOpen ? t.header.closeMenu : t.header.openMenu}
           aria-expanded={mobileNavOpen}
           aria-controls="mobile-nav-drawer"
           onClick={onToggleMobileNav}
+          size="sm"
           className="lg:hidden"
         >
           <Icon name={mobileNavOpen ? 'close' : 'menu'} size={17} />
@@ -71,13 +83,13 @@ export function AppHeader({
         <IconButton
           label={
             sidebarCollapsed
-              ? 'Expand navigation sidebar ([)'
-              : 'Collapse navigation sidebar ([)'
+              ? t.header.expandSidebar
+              : t.header.collapseSidebar
           }
           active={!sidebarCollapsed}
           onClick={onToggleSidebar}
           className="hidden lg:inline-flex"
-           size="sm"
+          size="sm"
         >
           <Icon name="sidebar-left" size={15} />
         </IconButton>
@@ -86,37 +98,37 @@ export function AppHeader({
 
         <a
           href={withBase('/')}
-          className="inline-flex items-center gap-2 rounded-sm py-1 px-1 -mx-1 hover:bg-surface-subtle transition-colors min-w-0"
+          className="inline-flex items-center gap-1.5 sm:gap-2 rounded-sm py-1 px-1 -mx-1 hover:bg-surface-subtle transition-colors min-w-0"
         >
           <span className="flex h-6 w-6 items-center justify-center rounded-sm bg-ink text-canvas shrink-0">
             <Icon name="studio" size={14} />
           </span>
-          <span className="text-[13px] font-semibold tracking-tight text-ink whitespace-nowrap">
+          <span className="text-[13px] font-semibold tracking-tight text-ink truncate">
             {SITE_CONFIG.name}
           </span>
         </a>
 
-        <Badge variant="outline" mono className="hidden md:inline-flex">
+        <Badge variant="outline" mono className="hidden xl:inline-flex">
           v{SITE_CONFIG.version}
         </Badge>
 
         <span
           aria-hidden="true"
-          className="text-ink-disabled text-[13px] select-none hidden sm:inline"
+          className="text-ink-disabled text-[13px] select-none hidden md:inline"
         >
           /
         </span>
 
-        <span className="text-[13px] font-medium text-ink-secondary truncate hidden sm:inline">
-          {currentNav.label}
+        <span className="text-[13px] font-medium text-ink-secondary truncate hidden md:inline">
+          {activeItemLabel}
         </span>
       </div>
 
-      {/* Right: Target context, theme toggle, inspector toggle */}
-      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <div className="hidden sm:block">
+      {/* Right: Platform switcher, Language switcher, Theme, Inspector */}
+      <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+        <div className="hidden md:block">
           <SegmentedControl
-            label="Target platform context"
+            label={t.header.platformGroupLabel}
             options={PLATFORM_OPTIONS}
             value={platformTarget}
             onChange={onPlatformChange}
@@ -124,13 +136,19 @@ export function AppHeader({
           />
         </div>
 
+        <SegmentedControl
+          label={t.header.languageGroupLabel}
+          options={LANGUAGE_OPTIONS}
+          value={lang}
+          onChange={onLanguageChange}
+          size="sm"
+        />
+
         <Divider orientation="vertical" subtle className="hidden sm:block mx-0.5" />
 
         <IconButton
           label={
-            theme === 'light'
-              ? 'Switch to dark neutral surface'
-              : 'Switch to light neutral surface'
+            theme === 'light' ? t.header.switchToDark : t.header.switchToLight
           }
           onClick={onToggleTheme}
           size="sm"
@@ -140,9 +158,7 @@ export function AppHeader({
 
         <IconButton
           label={
-            inspectorOpen
-              ? 'Hide inspector panel (])'
-              : 'Show inspector panel (])'
+            inspectorOpen ? t.header.hideInspector : t.header.showInspector
           }
           active={inspectorOpen}
           onClick={onToggleInspector}

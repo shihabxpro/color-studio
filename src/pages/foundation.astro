@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getDictionary } from '@/i18n';
 import { FoundationWorkspace } from '@/components/workspace';
+
+const t = getDictionary('bn');
 ---
 
-<BaseLayout title="UI Foundation">
+<BaseLayout title={t.foundation.pageTitle}>
   <FoundationWorkspace client:load />
 </BaseLayout>

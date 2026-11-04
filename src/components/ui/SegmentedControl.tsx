@@ -30,7 +30,7 @@ export function SegmentedControl<T extends string = string>({
       role="group"
       aria-label={label}
       className={cn(
-        'inline-flex items-center p-0.5 rounded-sm bg-surface-subtle border border-line',
+        'inline-flex flex-wrap items-center max-w-full p-0.5 rounded-sm bg-surface-subtle border border-line',
         className
       )}
     >

@@ -1,4 +1,5 @@
 export const STORAGE_KEYS = {
+  language: 'cs:lang',
   theme: 'cs:theme',
   sidebarCollapsed: 'cs:sidebar-collapsed',
   inspectorOpen: 'cs:inspector-open',

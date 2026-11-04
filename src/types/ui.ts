@@ -28,3 +28,6 @@ export type BadgeVariant = 'neutral' | 'accent' | 'outline';
 export type PlatformTarget = 'web' | 'android';
 
 export type ThemeMode = 'light' | 'dark';
+
+export type Language = 'bn' | 'en';
+

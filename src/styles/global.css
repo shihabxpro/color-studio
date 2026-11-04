@@ -1,3 +1,7 @@
+@import '@fontsource/hind-siliguri/400.css';
+@import '@fontsource/hind-siliguri/500.css';
+@import '@fontsource/hind-siliguri/600.css';
+@import '@fontsource/hind-siliguri/700.css';
 @import 'tailwindcss';
 @import './tokens.css';
 
@@ -55,7 +59,9 @@
   html {
     font-family: var(--cs-font-sans);
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.55;
+    max-width: 100%;
+    overflow-x: clip;
     background-color: var(--cs-canvas);
     color: var(--cs-fg-primary);
     -webkit-font-smoothing: antialiased;
@@ -63,9 +69,16 @@
     text-rendering: optimizeLegibility;
   }
 
+  html[data-lang='bn'] {
+    line-height: 1.62;
+  }
+
   body {
     margin: 0;
+    width: 100%;
+    max-width: 100%;
     min-height: 100dvh;
+    overflow-x: clip;
     background-color: var(--cs-canvas);
     color: var(--cs-fg-primary);
   }

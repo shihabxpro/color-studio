@@ -21,16 +21,16 @@ export function Panel({
   return (
     <section
       className={cn(
-        'rounded-md border border-line bg-surface shadow-xs overflow-hidden',
+        'min-w-0 max-w-full rounded-md border border-line bg-surface shadow-xs overflow-hidden',
         className
       )}
       {...props}
     >
       {(title || meta || actions) && (
-        <header className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-line-subtle bg-surface-subtle/60">
-          <div className="flex items-center gap-2 min-w-0">
+        <header className="flex flex-wrap items-center justify-between gap-2 px-3.5 sm:px-4 py-2.5 border-b border-line-subtle bg-surface-subtle/60">
+          <div className="flex items-center gap-2 min-w-0 flex-wrap">
             {title && (
-              <h2 className="text-[12px] font-semibold tracking-tight text-ink truncate">
+              <h2 className="text-[12px] font-semibold text-ink break-words">
                 {title}
               </h2>
             )}
@@ -41,7 +41,7 @@ export function Panel({
           )}
         </header>
       )}
-      <div className={cn('p-4', bodyClassName)}>{children}</div>
+      <div className={cn('p-3.5 sm:p-4 min-w-0', bodyClassName)}>{children}</div>
     </section>
   );
 }
